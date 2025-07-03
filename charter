@@ -1,0 +1,162 @@
+# **Project Charter – “Bonafide” Financial Systems Programme**
+
+*(Charter v 1.0 – restored to the original fuller layout, including the Day-1 Playbook)*
+
+| Prepared by | Bonafide Programme Manager |
+| ----------- | -------------------------- |
+| Date        | **{today’s date}**         |
+
+---
+
+## 1  Project Purpose
+
+RealNetworks Group will retire NetSuite, spreadsheets and point solutions and move all core finance processes onto **PeopleSoft Financials 9.2** under the programme codename **Bonafide**. The change enables multi-currency / multi-GAAP reporting, faster close, stronger audit controls and automated bank reconciliation for five European business units.
+
+---
+
+## 2  Background & Business Drivers
+
+* **High-Level Questionnaire** shows 22 active customers generating \~17 invoices per month across multiple entities, yet billing is split between Excel uploads and PDF email.
+* Five EU entities (UK, Austria, Portugal, Croatia, Muzicall) require separate ledgers, VAT, and bank feeds (BofA, Bankinter, mojaRBA).
+* Close averages 11 calendar days and bank auto-rec matches only \~55 %.
+* NetSuite lacks IFRS MultiBook and consistent VAT handling.
+
+---
+
+## 3  Objectives & Success Metrics
+
+| # | Metric                        | Baseline\* | Target       |
+| - | ----------------------------- | ---------- | ------------ |
+| 1 | Days-to-Close (all BUs)       | 11 days    | **≤ 5 days** |
+| 2 | Bank auto-reconciliation rate | 55 %       | **≥ 95 %**   |
+| 3 | Invoice accuracy              | 96 %       | **≥ 99 %**   |
+| 4 | AP three-way-match rate       | 78 %       | **≥ 97 %**   |
+| 5 | Manual journals per month     | > 400      | **< 50**     |
+
+\*Baselines were captured from finance‐ops workshops and the High-Level Questionnaire.
+
+---
+
+## 4  Scope
+
+| In-Scope (Phase 1)                                                                                                | Out of Scope / Future Phases                                       |
+| ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| Modules: GL, AP, AR/Billing, Purchasing, Asset Mgt, Project Costing, Cash Mgt/Treasury                            | Expenses, Lease Accounting, HighRadius Cash App, Salesforce Orders |
+| Legal Entities: RN Inc (US), England Ltd, Muzicall Ltd, RN GmbH (Austria), RN Portugal branch, RN Croatia d.o.o.  | WiderThan Korea, WiderThan Indonesia, Brazil entity                |
+| Integrations: Coupa → AP, Kyriba MT940/CAMT, NetSuite journals, outbound bank payment files, Tableau finance mart | VAT e-filing (SAF-T), Salesforce order interface                   |
+| Data Loads: FY-2022→cut-off GL, open AP/AR, fixed assets, master data                                             | Pre-2022 GL archive (kept read-only in NetSuite)                   |
+
+---
+
+## 5  Major Deliverables
+
+| Deliverable                                                  | Owner            | Due\*      |
+| ------------------------------------------------------------ | ---------------- | ---------- |
+| Configuration Design Docs                                    | Functional Leads | T + 6 wks  |
+| Master-Data Loads (ChartFields, suppliers, customers, banks) | Data Lead        | T + 8 wks  |
+| Interface Specs & Builds (5 inbound / 2 outbound)            | Integration Lead | T + 12 wks |
+| Conversion Packages & Reconciliation Workbooks               | Data Lead        | T + 14 wks |
+| Test Artefacts (Unit, SIT, UAT, Parallel Close)              | QA Lead          | T + 18 wks |
+| Training Materials & SOPs                                    | Change Mgmt      | T + 20 wks |
+| Cut-over Checklist & Hyper-care Playbook                     | PMO / Ops        | T + 22 wks |
+
+\*Dates relative to charter approval **T**.
+
+---
+
+## 6  High-Level Milestones
+
+| Milestone               | Planned Date   |
+| ----------------------- | -------------- |
+| Charter approved        | **T**          |
+| Configuration complete  | T + 10 wks     |
+| SIT complete            | T + 16 wks     |
+| UAT sign-off            | T + 20 wks     |
+| Parallel close (Aug-25) | T + 22 wks     |
+| Go-Live (all five BUs)  | **T + 24 wks** |
+| Hyper-care exit         | T + 28 wks     |
+
+---
+
+## 7  Integration Inventory
+
+| # | Interface                   | Dir. | Freq.    | Tech                     |
+| - | --------------------------- | ---- | -------- | ------------------------ |
+| 1 | NetSuite → PS GL journals   | IN   | Daily    | SFTP CSV + JRNL\_LOAD    |
+| 2 | Coupa → PS Vouchers         | IN   | 4-hourly | SFTP CSV + Voucher Build |
+| 3 | Kyriba → PS Bank Statements | IN   | Daily    | MT940 / CAMT.053         |
+| 4 | PS → Banks Payment Files    | OUT  | Daily    | BACS, SEPA, ACH          |
+| 5 | PS → Tableau Finance Mart   | OUT  | Nightly  | ODBC extract             |
+
+---
+
+## 8  Risks & Mitigation
+
+| ID   | Risk                    | Impact               | P | Mitigation                                  |
+| ---- | ----------------------- | -------------------- | - | ------------------------------------------- |
+| R-01 | MT940 variants per bank | Rec fail             | H | Collect sample files Day 1; parser variants |
+| R-02 | ChartField creep        | Report redesign      | M | CFO freeze; strict change control           |
+| R-03 | Coupa file > 5 k lines  | Voucher load timeout | L | Batch-split in ETL                          |
+| R-04 | Data conversion defects | Go-live delay        | M | Three dry-runs + reconciliations            |
+| R-05 | Resource attrition      | Schedule slip        | L | Cross-train; wiki knowledge base            |
+
+---
+
+## 9  Governance & Stakeholders
+
+| Role                | Name                    | Responsibility                 |
+| ------------------- | ----------------------- | ------------------------------ |
+| Executive Sponsor   | **CFO**                 | Budget, strategic decisions    |
+| Project Sponsor     | **VP Finance Ops**      | Escalations, stakeholder comms |
+| Programme Manager   | **Bonafide PM**         | Plan, track, report            |
+| Functional Leads    | GL, AP, AR, AM, PC      | Design & config                |
+| Technical Lead      | IT Integration Mgr      | Interfaces & environments      |
+| Data Migration Lead | Finance Systems Analyst | ETL & reconciliation           |
+| Treasury Lead       | Director Treasury       | Bank setup & testing           |
+| QA Lead             | QA Manager              | Testing strategy               |
+| Change Mgmt         | HR L\&D                 | Training, comms                |
+
+Steering Committee meets **bi-weekly Fridays 10:00**.
+
+---
+
+## 10  Budget *(confidential – to be finalised)*
+
+Internal FTE effort, SI partner fees, licence uplift (PROD + 2 non-PROD), 15 % contingency.
+
+---
+
+## 11  Approval
+
+| Name              | Title             | Signature                            | Date         |
+| ----------------- | ----------------- | ------------------------------------ | ------------ |
+| CFO               | Executive Sponsor | \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ | \_\_\_\_\_\_ |
+| CIO               | Steering Member   | \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ | \_\_\_\_\_\_ |
+| VP Finance Ops    | Project Sponsor   | \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ | \_\_\_\_\_\_ |
+| Programme Manager | PMO               | \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ | \_\_\_\_\_\_ |
+
+---
+
+## **Appendix A – Day-1 Playbook (Agenda & Outputs)**
+
+| Time          | Session                 | Participants           | Key Output                                 |
+| ------------- | ----------------------- | ---------------------- | ------------------------------------------ |
+| 08:30 – 09:00 | Kick-off stand-up       | PM + all leads         | Slack channel **#bonafide-go-live**        |
+| 09:00 – 10:00 | Vision & KPI review     | Sponsor, Finance Ops   | KPIs locked (see §3)                       |
+| 10:00 – 11:00 | Entity scope lock       | Finance Lead, Treasury | 5-BU list confirmed                        |
+| 11:00 – 12:00 | ChartField workshop     | GL Lead, Data Lead     | 10 ChartFields, tree owners                |
+| 12:30 – 13:30 | Banking deep-dive       | Treasury, Integrations | External Banks.xlsx drafted                |
+| 13:30 – 14:30 | Data-conversion primer  | Data Lead, SMEs        | Conversion Tracker.xlsx seeded             |
+| 15:00 – 16:00 | Integration round-robin | Integration Architect  | Interface inventory baselined              |
+| 16:00 – 17:00 | Risk log & Day-1 wrap   | PMO                    | Top-5 risks logged; Day-2 actions assigned |
+
+**Day-1 Definition of Done**:
+
+1. Charter signed (this document).
+2. Slack workspace live.
+3. Conversion owners assigned.
+4. Risk log initiated.
+
+---
+
+*End of Charter v 1.0 – restored full version with Day-1 Playbook.*
